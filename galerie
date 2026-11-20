@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ma galerie de photos interactive</title>
+  <style>
+    :root {
+      --fond: #f3f5f2;
+      --texte: #1d2b24;
+      --accent: #1f5c4a;
+      --focus: #b3470f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 1.5rem;
+      font-family: Georgia, "Times New Roman", serif;
+      background: var(--fond);
+      color: var(--texte);
+      line-height: 1.5;
+    }
+    h1 { margin: 0 0 .25rem; font-size: 2rem; color: var(--accent); }
+    h2 { margin: 0 0 1rem; font-size: 1.15rem; font-weight: normal; }
+
+    /* Grande zone d'aperçu : change au survol ou au focus */
+    #image {
+      min-height: 260px;
+      margin-bottom: 1.5rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: flex-end;
+      background: #dfe6e1 center / cover no-repeat;
+      color: var(--texte);
+    }
+    #image p {
+      margin: 0;
+      padding: .75rem 1rem;
+      width: 100%;
+      background: rgba(255, 255, 255, .88);
+      border-radius: 0 0 6px 6px;
+    }
+
+    #galerie {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+    figure { margin: 0; }
+    figure img {
+      display: block;
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    figcaption { margin-top: .35rem; font-size: .95rem; }
+
+    /* Focus clavier bien visible */
+    figure:focus { outline: 4px solid var(--focus); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ma galerie de photos</h1>
+    <h2>Survolez une photo ou naviguez avec la touche Tab pour l'agrandir</h2>
+  </header>
+
+  <main>
+    <div id="image">
+      <p id="legende">Aucune photo sélectionnée.</p>
+    </div>
+
+    <section id="galerie" aria-label="Galerie de six photos">
+      <figure onmouseover="upDate(this)" onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()">
+        <img src="images/img1.jpg" alt="Remplacez par la description de la photo 1">
+        <figcaption>Photo 1</figcaption>
+      </figure>
+      <figure onmouseover="upDate(this)" onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()">
+        <img src="images/img2.jpg" alt="Remplacez par la description de la photo 2">
+        <figcaption>Photo 2</figcaption>
+      </figure>
+      <figure onmouseover="upDate(this)" onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()">
+        <img src="images/img3.jpg" alt="Remplacez par la description de la photo 3">
+        <figcaption>Photo 3</figcaption>
+      </figure>
+      <figure onmouseover="upDate(this)" onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()">
+        <img src="images/img4.jpg" alt="Remplacez par la description de la photo 4">
+        <figcaption>Photo 4</figcaption>
+      </figure>
+      <figure onmouseover="upDate(this)" onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()">
+        <img src="images/img5.jpg" alt="Remplacez par la description de la photo 5">
+        <figcaption>Photo 5</figcaption>
+      </figure>
+      <figure onmouseover="upDate(this)" onmouseleave="undo()" onfocus="upDate(this)" onblur="undo()">
+        <img src="images/img6.jpg" alt="Remplacez par la description de la photo 6">
+        <figcaption>Photo 6</figcaption>
+      </figure>
+    </section>
+  </main>
+
+  <script>
+    var texteParDefaut = "Aucune photo sélectionnée.";
+
+    // Affiche la photo survolée / ciblée dans la grande zone
+    function upDate(figure) {
+      var img = figure.querySelector("img");
+      var zone = document.getElementById("image");
+      zone.style.backgroundImage = "url('" + img.src + "')";
+      document.getElementById("legende").textContent = img.alt;
+    }
+
+    // Remet la zone d'aperçu à son état initial
+    function undo() {
+      var zone = document.getElementById("image");
+      zone.style.backgroundImage = "none";
+      document.getElementById("legende").textContent = texteParDefaut;
+    }
+
+    // Ajoute tabindex="0" à chaque figure pour l'accès au clavier
+    function addTabIndex() {
+      console.log("onload : la fonction addTabIndex() est bien appelée.");
+      var figures = document.getElementsByTagName("figure");
+      for (var i = 0; i < figures.length; i++) {
+        figures[i].setAttribute("tabindex", "0");
+        console.log("tabindex ajouté à la figure " + (i + 1));
+      }
+    }
+
+    // Écouteur onload
+    window.onload = addTabIndex;
+  </script>
+</body>
+</html>
